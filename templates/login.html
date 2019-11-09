@@ -1,0 +1,33 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<head>
+	<title>Login</title>
+</head>
+
+{% block styles %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% endblock %}
+
+<style >
+		body {
+ 
+		background-image: url("https://consultqd.clevelandclinic.org/wp-content/uploads/sites/2/2018/06/650x450-Medical-Prediction.jpg");
+        background-repeat:no-repeat;
+       	background-size:cover;
+		}
+</style>
+
+{% block content %}
+    <div class="container">
+
+      <form class="form-signin" method="POST" action="/login">
+        <h2 class="form-signin-heading">Please sign in</h2>
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.password) }}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+
+    </div> <!-- /container -->
+{% endblock %}

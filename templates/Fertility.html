@@ -1,0 +1,58 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
+<head>
+	<title>Fertility</title>
+</head>
+
+{% block styles %}
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% endblock %}
+
+<style >
+		body {
+		background-image: url("https://consultqd.clevelandclinic.org/wp-content/uploads/sites/2/2018/06/650x450-Medical-Prediction.jpg");
+        background-repeat:no-repeat;
+       	background-size:cover;
+		}
+
+</style>
+
+
+<div class = "container">
+	<a class="btn btn-primary pull-right" href="/logout" role="button">Log out</a>
+</div>	
+
+{% block content %}
+	<div class="container">
+		<h2 class="form-inline-heading">Fill the below fields to predict Fertility</h2>
+	  <form class="form-inline input-lg	col-xs-7 " method="POST" action="/Fertility">
+	    
+	    {{ form.hidden_tag() }}
+	    {{ wtf.form_field(form.Season) }}
+	    {{ wtf.form_field(form.Age) }}
+	    {{ wtf.form_field(form.ChildDisease) }}
+	    {{ wtf.form_field(form.Accident) }}
+	    {{ wtf.form_field(form.Surgury) }}
+	    {{ wtf.form_field(form.HighFever) }}
+	    {{ wtf.form_field(form.Alcohol) }}
+	    {{ wtf.form_field(form.Smoking) }}
+	    {{ wtf.form_field(form.SittingHours) }}
+	    <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
+	  </form>
+
+
+	  <div class="card">
+	  <div class="card-header"> 
+	  </div>
+	  <div class="card-body">
+	  	<h4><strong>Prediction</strong></h4>
+	    <h1 class="card-title"><strong>{{ text_res }}</strong></h1>
+	  </div>
+	</div>
+
+	 
+
+
+	</div> <!-- /container -->
+{% endblock %}
