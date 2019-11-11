@@ -21,7 +21,7 @@
 
 <div class = "container">
 	<a class="btn btn-primary pull-right" href="/logout" role="button">Log out</a>
-</div>	
+</div>
 
 {% block content %}
 	<div class="container">
@@ -33,12 +33,28 @@
 		    <th>Price</th>
   		</thead>
 	  <tr>
-	    <td> <a class="btn btn-default" href="/BC" role="button">Breast Cancer</a> </td>
-	    <td>Free</td>
+			<td>Breast Cancer</td>
+			<td>Free</td>
+	    <td> <a class="btn btn-default" href="/BC" role="button"></a>Check for Free!</td>
 	  </tr>
 	  <tr>
-	    <td> <a class="btn btn-default" href="/paypal" role="button">Fertility</a> </td>
-	    <td>100 rupees</td>
+			<td>Fertility</td>
+			<td>10 $</td>
+	    <!-- <td><a class="btn btn-default" href="/paypal" role="button"></a></td> -->
+			<td>
+				<form action="{{ url_for('payment') }}" method="POST">
+          <script
+            src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ pub_key }}"
+            data-amount="1000"
+            data-name="CheckFertility"
+            data-description="Widget"
+            data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+            data-locale="auto">
+          </script>
+        </form>
+			</td>
+
 	  </tr>
 	</table>
 	</div> <!-- /container -->

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, jsonify, request
+from flask import Flask, render_template, redirect, url_for, jsonify
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SelectField
@@ -6,17 +6,15 @@ from wtforms.validators import InputRequired, Email, Length
 import numpy as np
 import pickle
 import paypalrestsdk
-import stripe
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SECRETKEY'
 bootstrap = Bootstrap(app)
 
-
-pub_key = 'pk_test_wPV9vhniHki7H9YBS9OBuUCP000TxA9tlN'
-secret_key = 'sk_test_bJqqFMkaQG9MQPYlUdukOuVN00pJ1MmoLl'
-stripe.api_key = secret_key
-
+paypalrestsdk.configure({
+  "mode": "sandbox", # sandbox or live
+  "client_id": "AY5WiJ0F0gTZGKSEO5nlomYaGjEF7jmsL7IUrUTt3HaJkczOpx87Ftb5UH3sAiP09HB55PzCnRJXBuU7",
+  "client_secret": "EDAzX4j4AjE_P68ncqj5DufjaG4a0NBHDrErvxx5PLrF9qjkDeUSvj__bqynr0PbBs_8pos_INbq8Aw7" })
 
 #######################################################
 
@@ -86,21 +84,53 @@ def signup():
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html', pub_key=pub_key)
+    return render_template('dashboard.html')
 
 #######################################################
 
 @app.route('/payment', methods=['POST'])
 def payment():
-    customer = stripe.Customer.create(email=request.form['stripeEmail'], source=request.form['stripeToken'])
 
-    charge = stripe.Charge.create(
-        customer=customer.id,
-        amount=1000,
-        currency='usd',
-        description='CheckFertility'
-    )
-    return redirect(url_for('Fertility'))
+    payment = paypalrestsdk.Payment({
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"},
+        "redirect_urls": {
+            "return_url": "http://localhost:5000/execute",
+            "cancel_url": "http://localhost:5000/dashboard"},
+        "transactions": [{
+            "item_list": {
+                "items": [{
+                    "name": "medicalprediction",
+                    "sku": "12345",
+                    "price": "100.00",
+                    "currency": "INR",
+                    "quantity": 1}]},
+            "amount": {
+                "total": "100.00",
+                "currency": "INR"},
+            "description": "This is the payment transaction description."}]})
+
+    if payment.create():
+        print('Payment success!')
+    else:
+        print(payment.error)
+
+    return jsonify({'paymentID' : payment.id})
+
+#######################################################
+
+@app.route('/execute', methods=['POST'])
+def execute():
+
+    payment = paypalrestsdk.Payment.find(request.form['paymentID'])
+
+    if payment.execute({'payer_id' : request.form['payerID']}):
+        print('Execute success!')
+        return render_template('Fertility.html')
+    else:
+        print(payment.error)
+        return render_template('dashboard.html')
 
 
 #######################################################
@@ -148,6 +178,12 @@ def Fertility():
 
 
     return render_template('Fertility.html', form=form, text_res = text_res)
+
+#######################################################
+
+@app.route('/paypal')
+def paypal():
+    return render_template('paypal.html')
 
 #######################################################
 
