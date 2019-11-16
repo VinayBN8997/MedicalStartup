@@ -18,11 +18,6 @@ bootstrap = Bootstrap(app)
 
 app.config.from_pyfile("settings.py")
 
-#app.config['SECRET_KEY'] = 'SECRETKEY'
-#SQLALCHEMY_DATABASE_URI = "postgres://snoapzfpurfhrk:5297713d450a7161e7606b822665731c504f33c7e3f5a2eb232acee2202ae554@ec2-174-129-253-174.compute-1.amazonaws.com:5432/d1mfrn5rjun5ea"
-#SQLALCHEMY_DATABASE_URI = "sqlite:///site.db"
-#app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
-
 db = SQLAlchemy(app)
 
 class User(db.Model):
@@ -32,7 +27,7 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.username}','{self.email}')"
-#engine = db.create_engine()
+
 pub_key = 'pk_test_wPV9vhniHki7H9YBS9OBuUCP000TxA9tlN'
 stripe.api_key = STRIPE_SECRET_KEY
 
