@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_bootstrap import Bootstrap
-from flas_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SelectField
 from wtforms.validators import InputRequired, Email, Length
