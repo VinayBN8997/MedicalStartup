@@ -7,5 +7,6 @@ class User(db.Model):
 
     def __repr__(self):
         return f"User('{self.username}','{self.email}')"
-
-db.create_all()
+        
+if __name__ == '__main__':
+    db.create_all()
