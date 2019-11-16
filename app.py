@@ -10,6 +10,7 @@ import paypalrestsdk
 import stripe
 import os
 import psycopg2
+from database import User
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 
@@ -88,7 +89,15 @@ def login():
 def signup():
     form = RegisterForm()
     if form.validate_on_submit():
+        temp_user = User(email = form.email.data, username = form.username.data, password = form.password.data)
         print(form.username.data + ' ' + form.email.data + ' ' + form.password.data)
+        db.session.add(temp_user)
+        db.session.commit()
+
+        print_users = User.query.all()
+        print("~~~~~~~~~~~~~~~~~~~~")
+        print("USERS: ",print_users)
+        print("~~~~~~~~~~~~~~~~~~~~")
         return redirect(url_for('login'))
 
     return render_template('signup.html', form=form)
