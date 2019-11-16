@@ -24,7 +24,7 @@ app.config.from_pyfile("settings.py")
 #app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 
 db = SQLAlchemy(app)
-engine = db.create_engine()
+#engine = db.create_engine()
 pub_key = 'pk_test_wPV9vhniHki7H9YBS9OBuUCP000TxA9tlN'
 stripe.api_key = STRIPE_SECRET_KEY
 
