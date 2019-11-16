@@ -10,7 +10,6 @@ import paypalrestsdk
 import stripe
 import os
 import psycopg2
-from database import User
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 
 
@@ -25,6 +24,14 @@ app.config.from_pyfile("settings.py")
 #app.config["SQLALCHEMY_DATABASE_URI"] = SQLALCHEMY_DATABASE_URI
 
 db = SQLAlchemy(app)
+
+class User(db.Model):
+    email = db.Column(db.String(100), primary_key = True)
+    username = db.Column(db.String(100), unique = True, nullable = False)
+    password = db.Column(db.String(100), nullable = False)
+
+    def __repr__(self):
+        return f"User('{self.username}','{self.email}')"
 #engine = db.create_engine()
 pub_key = 'pk_test_wPV9vhniHki7H9YBS9OBuUCP000TxA9tlN'
 stripe.api_key = STRIPE_SECRET_KEY
