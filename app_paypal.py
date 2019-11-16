@@ -13,8 +13,8 @@ bootstrap = Bootstrap(app)
 
 paypalrestsdk.configure({
   "mode": "sandbox", # sandbox or live
-  "client_id": "AY5WiJ0F0gTZGKSEO5nlomYaGjEF7jmsL7IUrUTt3HaJkczOpx87Ftb5UH3sAiP09HB55PzCnRJXBuU7",
-  "client_secret": "EDAzX4j4AjE_P68ncqj5DufjaG4a0NBHDrErvxx5PLrF9qjkDeUSvj__bqynr0PbBs_8pos_INbq8Aw7" })
+  "client_id": "client_id",
+  "client_secret": "client_secret" })
 
 #######################################################
 
