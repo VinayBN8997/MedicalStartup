@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, jsonify, request
 from flask_bootstrap import Bootstrap
+from flas_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SelectField
 from wtforms.validators import InputRequired, Email, Length
@@ -12,6 +13,10 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'SECRETKEY'
 bootstrap = Bootstrap(app)
 
+SQLALCHEMY_DATABASE_URI = "postgres://snoapzfpurfhrk:5297713d450a7161e7606b822665731c504f33c7e3f5a2eb232acee2202ae554@ec2-174-129-253-174.compute-1.amazonaws.com:5432/d1mfrn5rjun5ea"
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+
+db = SQLAlchemy(app)
 
 pub_key = 'pk_test_wPV9vhniHki7H9YBS9OBuUCP000TxA9tlN'
 secret_key = 'sk_test_bJqqFMkaQG9MQPYlUdukOuVN00pJ1MmoLl'
