@@ -86,8 +86,14 @@ def login():
     if form.validate_on_submit():
         user = form.username.data
         print(form.username.data + ' ' + form.password.data)
-        return redirect(url_for('dashboard'))
-
+        temp_users = User.query.filter_by(username=form.username.data).all()
+        if len(temp_users) == 0:
+            return redirect(url_for('login'))
+        else:
+            if temp_users[0].password == form.password.data:
+                return redirect(url_for('dashboard'))
+            else:
+                return redirect(url_for('login'))
     return render_template('login.html', form=form)
 
 #######################################################
@@ -98,14 +104,22 @@ def signup():
     if form.validate_on_submit():
         temp_user = User(email = form.email.data, username = form.username.data, password = form.password.data)
         print(form.username.data + ' ' + form.email.data + ' ' + form.password.data)
-        db.session.add(temp_user)
-        db.session.commit()
-
-        print_users = User.query.all()
-        print("~~~~~~~~~~~~~~~~~~~~")
-        print("USERS: ",print_users)
-        print("~~~~~~~~~~~~~~~~~~~~")
-        return redirect(url_for('login'))
+        temp_users = User.query.filter_by(email=form.email.data).all()
+        if len(temp_users) == 0:
+            temp_users = User.query.filter_by(username=form.username.data).all()
+            if len(temp_users) == 0:
+                db.session.add(temp_user)
+                db.session.commit()
+                print_users = User.query.all()
+                print("~~~~~~~~~~~~~~~~~~~~")
+                print("Signup successful")
+                print("USERS: ",print_users)
+                print("~~~~~~~~~~~~~~~~~~~~")
+                return redirect(url_for('login'))
+            else:
+                return redirect(url_for('signup'))
+        else:
+            return redirect(url_for('signup'))
 
     return render_template('signup.html', form=form)
 
