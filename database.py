@@ -1,4 +1,4 @@
-from .app import db
+from app import db
 
 class User(db.Model):
     email = db.Column(db.String(100), uqique = True, nullable = False)
